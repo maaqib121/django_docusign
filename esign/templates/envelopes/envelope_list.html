@@ -1,0 +1,30 @@
+{% extends 'index.html' %} {% block content %}
+<h3>In Progress Envelopes List</h3>
+
+<div class="table-responsive mt-4">
+  <table class="table">
+    <thead class="thead-dark">
+      <th>Envelope ID</th>
+      <th>Status</th>
+      <th>Sent at</th>
+      <th colspan="2">Actions</th>
+    </thead>
+
+    <tbody>
+      {% for envelope in envelope_list %}
+      <tr>
+        <td>{{ envelope.envelope_id }}</td>
+        <td>{{ envelope.status }}</td>
+        <td>{{ envelope.sent_date_time }}</td>
+        <td>
+          <a href="{% url 'esign:envelope_detail' envelope.envelope_id %}" class="btn btn-sm btn-primary">Details</a>
+        </td>
+        <td>
+          <a href="{% url 'esign:envelope_delete' envelope.envelope_id %}" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}

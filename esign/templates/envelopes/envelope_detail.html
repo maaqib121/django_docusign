@@ -1,0 +1,48 @@
+{% extends 'index.html' %} {% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between">
+  <h3>Recipients List</h3>
+  <form method="POST" action="{% url 'esign:recipient_create' envelope.envelope_id %}">
+    {% csrf_token %}
+    <div class="input-group mb-3">
+      <input type="email" name="email" class="form-control" placeholder="Recipient Email" />
+
+      <div class="input-group-append">
+        <button class="btn btn-primary">Add</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<p class="mt-4">Envelope Status: <b>{{ envelope.status }}</b></p>
+<div class="table-responsive">
+  <table class="table">
+    <thead class="thead-dark">
+      <th>Recipient ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </thead>
+
+    <tbody>
+      {% for signer in envelope_recipients.signers %}
+      <tr>
+        <td>{{ signer.recipient_id }}</td>
+        <td>{{ signer.name }}</td>
+        <td>{{ signer.email }}</td>
+        <td>{{ signer.status }}</td>
+        {% if signer.status == 'sent' or signer.status == 'delivered' %}
+        <td>
+          <a
+            href="{% url 'esign:recipient_delete' envelope_id=envelope.envelope_id recipient_id=signer.recipient_id %}"
+            class="btn btn-sm btn-danger"
+            >Delete
+          </a>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}
